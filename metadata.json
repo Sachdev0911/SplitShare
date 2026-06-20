@@ -1,0 +1,5 @@
+{
+  "name": "SplitShare",
+  "description": "A production-grade expense splitting application with real-time updates, group management, and debt settlement.",
+  "requestFramePermissions": []
+}

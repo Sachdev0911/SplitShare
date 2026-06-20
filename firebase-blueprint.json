@@ -1,0 +1,118 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the application",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "email"]
+    },
+    "Group": {
+      "title": "Group",
+      "description": "An expense splitting group",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "members": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "members"]
+    },
+    "Expense": {
+      "title": "Expense",
+      "description": "An expense record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "description": { "type": "string" },
+        "totalAmount": { "type": "number" },
+        "currency": { "type": "string" },
+        "paidById": { "type": "string" },
+        "groupId": { "type": "string" },
+        "splitType": { "type": "string", "enum": ["equal", "exact", "percentage", "shares"] },
+        "splits": { "type": "object" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "description", "totalAmount", "paidById", "groupId"]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "A settlement payment between users",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fromUser": { "type": "string" },
+        "toUser": { "type": "string" },
+        "amount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "completed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "fromUser", "toUser", "amount"]
+    },
+    "Invitation": {
+      "title": "Invitation",
+      "description": "A group invitation sent to a user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "groupId": { "type": "string" },
+        "groupName": { "type": "string" },
+        "inviterId": { "type": "string" },
+        "inviterName": { "type": "string" },
+        "inviteeEmail": { "type": "string", "format": "email" },
+        "inviteeId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "groupId", "groupName", "inviterId", "inviteeEmail", "inviteeId", "status"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "A private message between two users",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "conversationId": { "type": "string" },
+        "participants": { "type": "array", "items": { "type": "string" } },
+        "senderId": { "type": "string" },
+        "receiverId": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "conversationId", "participants", "senderId", "receiverId", "content", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/groups/{groupId}": {
+      "schema": "Group",
+      "description": "Group data"
+    },
+    "/groups/{groupId}/expenses/{expenseId}": {
+      "schema": "Expense",
+      "description": "Expenses within a group"
+    },
+    "/groups/{groupId}/payments/{paymentId}": {
+      "schema": "Payment",
+      "description": "Payments within a group"
+    },
+    "/invitations/{invitationId}": {
+      "schema": "Invitation",
+      "description": "Group invitations"
+    },
+    "/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Private messages between users"
+    }
+  }
+}
